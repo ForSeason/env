@@ -45,7 +45,7 @@ func init() {
 		}
 	}
 	isInitialized = true
-	log.Println("env loaded.")
+	log.Println("env: loaded.")
 }
 
 func parseLine(line []byte) error {
@@ -55,6 +55,9 @@ func parseLine(line []byte) error {
 		i          int
 		isFiltered bool
 	)
+	if line[0] == '#' {
+		return nil
+	}
 	for i < len(line) {
 		if !isFiltered && line[i] == '=' {
 			isFiltered = true
@@ -78,7 +81,9 @@ func parseLine(line []byte) error {
 	return nil
 }
 
-// This function will try to get value from map with input key. If the map has not been initialized or there is no value for the key, Get() will return default value.
+// This function will try to get value from map with input key.
+// If the map has not been initialized or there is no value for the key,
+// Get() will return default value.
 func Get(key, defaultValue string) string {
 	if value, ok := data[key]; !ok || !isInitialized {
 		return defaultValue

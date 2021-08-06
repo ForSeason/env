@@ -6,4 +6,17 @@ If initialization fails, the package will print error in log and **clear all dat
 
 Initializer use `=` as seprator between key and value. That is to say, part before first `=` is key, and the rest part is value. It is ok to use empty value.
 
-Initializer will ignore empty line.
+Initializer will ignore empty lines and lines begin with `#`.
+
+# Sample .env file
+
+```
+# "KEY" => "VALUE"
+KEY=VALUE
+
+# "KEY " => " VALUE"
+KEY = VALUE
+
+# "APP_KEY" => "123/=123"
+APP_KEY=123/=123
+```
