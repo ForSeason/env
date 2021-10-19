@@ -13,6 +13,8 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
+	"path"
 )
 
 var (
@@ -22,7 +24,7 @@ var (
 
 func init() {
 	data = make(map[string]string)
-	f, err := os.Open(".env")
+	f, err := os.Open(getEnvPath())
 	if err != nil {
 		log.Println("env: " + err.Error())
 		return
@@ -90,4 +92,19 @@ func Get(key, defaultValue string) string {
 	} else {
 		return value
 	}
+}
+
+func getModulePath() string {
+	cmd := exec.Command("go", "env", "GOMOD")
+	var res string
+	if bytes, err := cmd.Output(); err != nil {
+		panic(err)
+	} else {
+		res = string(bytes)
+	}
+	return path.Dir(res)
+}
+
+func getEnvPath() string {
+	return path.Join(getModulePath(), ".env")
 }
